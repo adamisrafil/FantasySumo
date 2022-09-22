@@ -16,7 +16,7 @@ def scrapeDayOfSumo(day):
             {
               'wrestler1Result': row.find_all('td', class_='tk_kekka')[0].find('img').get('src'),
               'Rikishi1': row.find('td', class_='tk_east').find('center').find('a').text,
-              'Technique': row.find('td', class_='tk_kim').text,
+              'Technique': row.find('td', class_='tk_kim').contents[1].text,
               'Rikishi2': row.find('td', class_='tk_west').find('center').find('a').text,
               'wrestler2Result': row.find_all('td', class_='tk_kekka')[1].find('img').get('src'),
             }
