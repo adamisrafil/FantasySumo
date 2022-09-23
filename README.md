@@ -1,2 +1,2 @@
-# SumoScraper
+# Fantasy Sumo
  
