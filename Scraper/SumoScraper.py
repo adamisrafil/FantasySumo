@@ -12,7 +12,7 @@ def scrapeDayOfSumo(day):
 	topDivTable = tables.find_all('tr')
 	topDivTable.pop(0)
 	fieldnames = ['wrestler1Result', 'Rikishi1', 'Technique', 'Rikishi2', 'wrestler2Result']
-	cleaned_rows = [
+	bouts = [
             {
               'wrestler1Result': row.find_all('td', class_='tk_kekka')[0].find('img').get('src'),
               'Rikishi1': row.find('td', class_='tk_east').find('center').find('a').text,
@@ -22,22 +22,38 @@ def scrapeDayOfSumo(day):
             }
 	for row in topDivTable]
 
-	for row in cleaned_rows:
-		if row['wrestler1Result'] == 'img/hoshi_kuro.gif':
-			row['wrestler1Result'] = "Loser"
-			row['wrestler2Result'] = "Winner"
-		elif row['wrestler2Result'] == 'img/hoshi_kuro.gif':
-			row['wrestler2Result'] = "Winner"
-			row['wrestler1Result'] = "Loser"
+	for bout in bouts:
+		if bout['wrestler1Result'] == 'img/hoshi_kuro.gif':
+			bout['wrestler1Result'] = "Loser"
+			bout['wrestler2Result'] = "Winner"
+		elif bout['wrestler2Result'] == 'img/hoshi_kuro.gif':
+			bout['wrestler2Result'] = "Winner"
+			bout['wrestler1Result'] = "Loser"
 	
-	pprint(cleaned_rows)
+	pprint(bouts)
+
+	writeCSV(day, bouts)
+	# updateRikishi(rikishiName, record)
+
+
+def writeCSV(day, bouts):
+	fieldnames = ['wrestler1Result', 'Rikishi1', 'Technique', 'Rikishi2', 'wrestler2Result']
 
 	with open(f'bashoDay{day}.csv', 'w', encoding='UTF-8', newline='') as f:
 		writer = csv.DictWriter(f, fieldnames=fieldnames)
 		writer.writeheader()
-		writer.writerows(cleaned_rows)
+		writer.writerows(bouts)
 
+def updateRikishi(rikishi, record):
+	fieldnames = ['wrestler1Result', 'Rikishi1', 'Technique', 'Rikishi2', 'wrestler2Result']
+
+	with open(f'bashoDay{day}.csv', 'w', encoding='UTF-8', newline='') as f:
+		writer = csv.DictWriter(f, fieldnames=fieldnames)
+		writer.writeheader()
+		writer.writerows(bouts)
 
 if __name__ == '__main__':
+	#which tournament
+	#which days?
 	for day in range(1,12):
 		scrapeDayOfSumo(day)
